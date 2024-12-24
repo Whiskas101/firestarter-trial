@@ -3,6 +3,11 @@ import MovieTile from "@/components/MovieTile";
 import {View, Text, Image, StatusBar, StyleSheet} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// For pulling user data
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { useEffect, useState } from "react";
+
+
 // Assets
 const logo =require("../../assets/icons/firestarter.png");
 const userIcon = require("../../assets/icons/Google_7.png") // as a temporary measure
@@ -14,6 +19,26 @@ const tempIcon = require("../../assets/stickers/Interstellar.png")
 
 export default function Home(){
 
+    const [user, setUser] = useState<FirebaseAuthTypes.User|null>(null);
+
+    const [editing, setEditing] = useState(true);
+    
+    // Helper function
+    function firstName(name: string | null | undefined){
+        if (name){
+            return name.split(" ")[0];
+        }else{
+            return "Loading";
+        }
+    }
+
+    useEffect(()=>{
+        const currentUser = auth().currentUser;
+        if (currentUser){
+            setUser(currentUser);
+        }
+    }, [])
+
     // const backgroundColor = "#0F1112";
     return (
         <SafeAreaView style={styles.parent}>
@@ -24,18 +49,21 @@ export default function Home(){
 
                 <Text style={styles.logoText}>firestarter</Text>
                 <View style={{flex:1}}/>
+                {/* User Profile Icon */}
                 <Image source={userIcon} style={styles.logo}/>
             </View>
             {/* Favorite Movies Section */}
             {/* Text above the movie tiles*/}
             <View style={{flexDirection:"row", paddingHorizontal:25}}>
-                <Text style={styles.favText}>Krish's favourite movies</Text>
+                <Text style={styles.favText}>
+                    {/* Extracting the first name of the user from the logged in object, if it exists. */}
+                    {firstName(user?.displayName)} favourite movies</Text>
                 <View style={{flex:1}}/>
                 <Image source={editIcon} style={styles.tinyIcon}></Image>
             </View>
 
             {/* Horizontal list of movie tiles */}
-            <MovieTile source={tempIcon} text="Interstellar"/>
+            <MovieTile source={tempIcon} text="Interstellar" editing={editing}/>
 
             {/* Reviews Section */}
             {/* Text Above the actual review box */}
@@ -49,7 +77,7 @@ export default function Home(){
             <Review 
             content="This is rather short review"
             profileImg={userIcon}
-            username="Krish"
+            username={firstName(user?.displayName)}
             movieIcon={tempIcon}
             movieName="Interstellar"
             rating={4}

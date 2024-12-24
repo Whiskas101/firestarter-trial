@@ -2,6 +2,14 @@
 import { View, Text, StyleSheet, Image, StatusBar, Button, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
+import { useEffect } from "react";
+
+GoogleSignin.configure({
+    webClientId:"444365323421-1k2b998j9bg8c0d69rmrp3sih78e757j.apps.googleusercontent.com",
+    scopes:["profile", "email"]
+});
 
 
 const logoImage = require("../../assets/icons/firestarter.png")
@@ -12,8 +20,35 @@ export default function Landing(){
 
     const router = useRouter();
 
+
+    useEffect(()=>{
+        const unsubscribe = auth().onAuthStateChanged((user)=>{
+            if(user){
+                // router.push('/screens/Home');
+                router.push('/screens/Home');
+            }
+        });
+        return ()=>unsubscribe()
+    }, []);
+
     async function attemptLogin(){
         // actual firebase auth step here
+        await GoogleSignin.signOut();
+        await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+
+        //obtain user id token
+        const googleSignInResult = await GoogleSignin.signIn();
+        if (!googleSignInResult.data) return;
+        
+        
+        const googleCreds = auth.GoogleAuthProvider.credential(
+            googleSignInResult.data?.idToken
+        );
+        
+        // push the user, if brand new, to be stored on the backend.
+        const res = await auth().signInWithCredential(googleCreds);
+        console.log(res)
+        
 
         // navigate if auth is successful
         router.push('/screens/Home')

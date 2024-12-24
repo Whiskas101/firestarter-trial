@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     },
 
     deleteIcon:{
-        height:"80%",
-        width:"50%",
+        height:"50%",
+        width:"30%",
     },
 
     heartIcon:{
