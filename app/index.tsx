@@ -8,9 +8,9 @@ const tempIcon = require("../assets/stickers/Interstellar.png")
 
 export default function Index() {
   return (
-    // <Landing/>
+    <Landing/>
     // <Home/>
-    <CreateReview MovieIcon={tempIcon} MovieName="Interstellar"/>
+    // <CreateReview MovieIcon={tempIcon} MovieName="Interstellar"/>
   );
 
 }

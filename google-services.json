@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "444365323421",
+    "project_id": "trial-app-winter-2024",
+    "storage_bucket": "trial-app-winter-2024.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444365323421:android:5c6ca195cfb6792181a874",
+        "android_client_info": {
+          "package_name": "com.whiskas101.trialapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444365323421-mjf7rkvqofn58sagvo4nnqd2m1djhqmc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whiskas101.trialapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "444365323421-1k2b998j9bg8c0d69rmrp3sih78e757j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACHrlPj55dvg1Upq8Q93C0DdKvCKYxuj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444365323421-1k2b998j9bg8c0d69rmrp3sih78e757j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,12 +1,28 @@
 
 import { View, Text, StyleSheet, Image, StatusBar, Button, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+
 
 const logoImage = require("../../assets/icons/firestarter.png")
 const googleIcon = require("../../assets/icons/Google_7.png")
 const appleIcon = require("../../assets/icons/Apple Logo_2.png")
 
 export default function Landing(){
+
+    const router = useRouter();
+
+    async function attemptLogin(){
+        // actual firebase auth step here
+
+        // navigate if auth is successful
+        router.push('/screens/Home')
+    }
+
+
+
+
+
     return (
         <SafeAreaView style={styles.parent}>
             {/* Necessary as status bar doesn't adhere to the background color by default. */}
@@ -30,7 +46,7 @@ export default function Landing(){
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={()=>{console.log("Login attempt")}}
+                    onPress={attemptLogin}
                 >   
                 <View style={{flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
 

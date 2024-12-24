@@ -15,7 +15,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0F1112"
-      }
+      },
+      "package": "com.whiskas101.trialapp",
+      "googleServicesFile":"./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -36,7 +38,7 @@
       [
         "expo-font",
         {
-          "fonts":[
+          "fonts": [
             "./assets/fonts/Gotham Rounded Medium.ttf",
             "./assets/fonts/Gotham Rounded Medium Italic.ttf",
             "./assets/fonts/Gotham Rounded Bold.ttf",

@@ -33,5 +33,13 @@ export default function RootLayout() {
       backgroundColor:"#0F1112"
     },
    
-  }}/>;
+  }}>
+    <Stack.Screen name="index" options={{title:"base"}}></Stack.Screen>
+    <Stack.Screen name="screens/Home" options={{title:"home"}}></Stack.Screen>
+    <Stack.Screen name="screens/Landing" options={{title:"landing"}}></Stack.Screen>
+    <Stack.Screen name="screens/CreateReview" options={{title:"create"}}></Stack.Screen>
+    
+
+
+  </Stack>;
 }
