@@ -1,39 +1,37 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import { useEffect } from "react";
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    // Loading all the necessary fonts.
+    const [loaded, error] = useFonts({
+        'Gotham-Medium':require('../assets/fonts/Gotham Rounded Medium.ttf'),
+        'Gotham-Rounded-Bold':require('../assets/fonts/Gotham Rounded Bold.ttf'),
+        'SF-Pro-Text-Bold':require('../assets/fonts/sf-pro-text-bold.ttf'),
+        'SF-Pro-Text-Medium':require('../assets/fonts/sf-pro-text-medium.ttf'),
+    })
+
+    useEffect(()=>{
+        if(loaded || error){
+            SplashScreen.hideAsync()
+        }
+    }, [loaded, error])
+
+    if(!loaded && !error){
+      return null;
     }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+  return <Stack screenOptions={{
+    headerShown:false, // hiding the header
+    headerStyle:{
+      backgroundColor:"#0F1112"
+    },
+   
+  }}/>;
 }

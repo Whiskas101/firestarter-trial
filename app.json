@@ -14,7 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0F1112"
       }
     },
     "web": {
@@ -30,7 +30,22 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#0F1112"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts":[
+            "./assets/fonts/Gotham Rounded Medium.ttf",
+            "./assets/fonts/Gotham Rounded Medium Italic.ttf",
+            "./assets/fonts/Gotham Rounded Bold.ttf",
+            "./assets/fonts/Gotham Rounded Bold Italic.ttf",
+            "./assets/fonts/Gotham Rounded Light.ttf",
+            "./assets/fonts/Gotham Rounded Light Italic.ttf",
+            "./assets/fonts/Gotham Rounded Book.ttf",
+            "./assets/fonts/Gotham Rounded Book Italic.ttf"
+          ]
         }
       ]
     ],
