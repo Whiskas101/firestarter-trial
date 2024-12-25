@@ -1,19 +1,27 @@
 import { relativeTime } from "@/utils"
+import React from "react"
 import {View, Text, StyleSheet, Image, ImageSourcePropType} from "react-native"
-import { create } from "react-test-renderer"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+
 const starIcon = require("../assets/icons/Star_1.png")
 const deleteIcon = require("../assets/icons/Delete_2.png")
-const heartIcon = require("../assets/icons/Heart_3.png")
+const activeHeartIcon = require("../assets/icons/Heart_3.png")
+const inactiveHeartIcon = require("../assets/icons/Heart_2.png")
+
+import auth from "@react-native-firebase/auth"
 
 type ReviewProp = {
-    username: string,
-    profileImg: ImageSourcePropType,
-    content: string,
-    movieIcon: ImageSourcePropType
-    movieName: string,
-    rating: number,
-    likes: number
-    created_at: Date
+    username: string;
+    profileImg: ImageSourcePropType;
+    content: string;
+    movieIcon: ImageSourcePropType;
+    movieName: string;
+    rating: number;
+    likes: number;
+    created_at: Date;
+    delFunc?: Function;
+    id?:string;
+
 }
 
 export default function Review(
@@ -26,11 +34,14 @@ export default function Review(
         rating, 
         likes,
         created_at,
-    } : ReviewProp
+        delFunc,
+        id
+    }:ReviewProp
+    
 ){
 
 
-    
+    const user = auth().currentUser;
     const time = relativeTime(
         created_at.toJSON().seconds
     )
@@ -38,7 +49,7 @@ export default function Review(
     return (<View style={styles.container}>
         {/* Contains the username and time */}
         <View style={styles.topContainer}>
-            <Image source={profileImg} style={styles.image}/>
+            {user?.photoURL && <Image source={{uri:user.photoURL}} style={styles.image}/>}
             <Text style={styles.subtleText}>{username}</Text>
             <View style={{flex:1}}></View>
             <Text style={styles.subtleText}>{time}</Text>
@@ -76,18 +87,21 @@ export default function Review(
         </View>
 
             {/* Last section, for dealing with deletion and showing total likes */}
-
             <View style={{flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
                 {/* Delete Button */}
-                <View style={styles.deleteBox}>
-                    <Image source={deleteIcon} style={styles.deleteIcon}/>
-                </View>
+                <TouchableWithoutFeedback
+                    onPress={()=>delFunc?.(id)}
+                >
+                    <View style={styles.deleteBox}>
+                        <Image source={deleteIcon} style={styles.deleteIcon}/>
+                    </View>
+                </TouchableWithoutFeedback>
 
                 <View style={{flex:1}}></View>
                 {/* Likes */}
                 {likes > 1 ? <Text style={{...styles.subtleText, marginBottom:14}}>{likes} likes</Text>:<Text style={{...styles.subtleText, marginBottom:14}}>No Likes</Text>}
                 
-                <Image source={heartIcon} style={styles.heartIcon}/>
+                <Image source={inactiveHeartIcon} style={styles.heartIcon}/>
 
             </View>
     </View>);
@@ -148,7 +162,8 @@ const styles = StyleSheet.create({
     image:{
         height:17,
         width:17,
-        marginRight:7
+        marginRight:7,
+        borderRadius:50
     },
 
     movieIcon:{

@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import { useEffect } from "react";
+import React from "react";
 
 GoogleSignin.configure({
     webClientId:"444365323421-1k2b998j9bg8c0d69rmrp3sih78e757j.apps.googleusercontent.com",

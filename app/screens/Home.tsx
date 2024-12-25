@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native";
 
 // For pulling user data
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { fetchAllReview, fetchMovies, getFavorites } from "@/firebaseService";
+import { favouriteMovie, fetchAllReview, fetchMovies, getFavorites } from "@/firebaseService";
 import { favouriteType } from "@/models/FavoritesModel";
 
 
@@ -26,20 +26,21 @@ import {Asset} from "expo-asset";
 import { ReviewModel, reviewType } from "@/models/ReviewModel";
 import { useReviewContext } from "@/contexts/ReviewContext";
 import { relativeTime } from "@/utils";
+import React from "react";
+import AddFavorite from "@/components/AddFavorite";
 const logo =require("../../assets/icons/firestarter.png");
 const userIcon = require("../../assets/icons/Google_7.png") // as a temporary measure
 const fabIcon = require("../../assets/icons/Hand With Pen_1.png")
 const editIcon = require("../../assets/icons/Edit_1.png")
 const sortIcon = require("../../assets/icons/Sorting arrowheads_1.png")
 const doneIcon = require("../../assets/icons/Check Mark_2.png")
-
+const emptyIcon = require("../../assets/icons/Nothing Found_1.png")
 
 const tempIcon = require("../../assets/stickers/Interstellar.png")
 
 export default function Home(){
 
     const [user, setUser] = useState<FirebaseAuthTypes.User|null>(null);
-
 
     const [editing, setEditing] = useState(false);
 
@@ -48,6 +49,8 @@ export default function Home(){
     const router = useRouter();
 
     const {movie, setMovieData} = useMovieContext();
+
+    const [mode, setMode] = useState("review"); // for implementing the dual usage of the bottom sheet
     
     const [favourites, setFavourites] = useState<movieType[]|undefined>([]);
     // const [reviews, setReviews] = useState<reviewType[] | undefined>([]);
@@ -85,7 +88,6 @@ export default function Home(){
     // make user object accessible
     useEffect(()=>{
         const currentUser = auth().currentUser;
-        console.log(currentUser)
 
         if (currentUser){
             setUser(currentUser);
@@ -132,10 +134,20 @@ export default function Home(){
 
     // Favorites deletion logic
     function removeFavorite(title: string){
-        console.log("delete req");
-        setFavourites(favourites?.filter(item=>item.title !== title))
+        console.log("delete fav req");
+        setFavourites(favourites=>favourites?.filter(item=>item.title !== title))
+        return // temp
+        // ADD API CALL TO DELETE FAV HERE
+    }
 
-        // ADD API CALL TO DELTE FAV HERE
+    // Deletion of review
+    function removeReview(id: string){
+        console.log("delete review req");
+        // console.log(review);
+        
+        // review?.map((item)=>console.log(item.id !== id))
+        setReviewData((review?.filter(item=>item.id !== id)) || [])
+        return; // temp
     }
 
     // moving to review recreation
@@ -154,6 +166,49 @@ export default function Home(){
         )
         router.push("/screens/CreateReview")
     }
+
+    // begin the add to fav interaction and prepare movie tiles for different behaviour
+    function startAddFavorite(){
+        setBottomSheetState(
+            bottomSheetState=>!bottomSheetState
+        )
+
+        setMode("pick");
+    }
+
+    async function addFav(title: string, id: string){
+        console.log("Mode is")
+        console.log(mode);
+        
+        if (mode === "pick"){
+            // extract the selected movie, and put it in favorites
+            // this is from context!
+            
+            
+            const fav = new Movie({
+                id: "none",
+                title:title,
+                rating:0, // doesnt matter, its not visible, here for the sake of class model
+            });
+            
+            //update the backend
+            const result = await favouriteMovie(fav);
+            console.log(result)
+            console.log("sent update");
+            setBottomSheetState(
+                false
+            )
+
+            // refetch data
+            const newfavs = await getFavorites();
+            console.log("New fetch");
+            
+            setFavourites(newfavs);
+            setMode("review")
+            
+        }
+    }
+    
 
     useEffect(()=>{
         // console.log("updatedfav");
@@ -204,7 +259,7 @@ export default function Home(){
             {/* Horizontal list of movie tiles */}
             <View style={{marginTop: 12}}>
                 {
-                favourites && (favourites.length > 0) ?
+                
                 <FlatList
                     // style={}
                     data = {favourites}
@@ -221,11 +276,15 @@ export default function Home(){
                             editing={editing}
                         />
                     }}
+                    ListFooterComponent={
+                            <AddFavorite onTap={startAddFavorite}/>
+                            
+                        // <Text>Hi</Text>
+ 
+                    }
+
                 />
-                : 
-                <View>
-                    <Text>To handle empty fav list yet</Text>
-                </View>
+                
                 }
             </View>
 
@@ -240,14 +299,12 @@ export default function Home(){
                 </View>
                 {/* Actual Vertical (?) list of reviews here */}
                 <View style={{marginHorizontal: 12, marginVertical:10}}>
-                    <FlatList
+                    {review && review?.length > 0 ? <FlatList
                         data = {review}
                         style={{ borderRadius:18}} // To make the cut not feel abrupt when the reviews go off screen
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item=>item.id.toString()}
                         renderItem={({item})=>{
-                            console.log("a review:")
-                            console.log(item.id)
                            
                             
                             return <Review 
@@ -260,12 +317,29 @@ export default function Home(){
                                 rating={item.rating}
                                 likes={item.likes}
                                 created_at={item.created_at}
+                                delFunc={removeReview}
+                                id={item.id}
                             />
                         }}
                     
                     >
                         
                     </FlatList>
+                    :
+                    <View style={{flexDirection: "row", justifyContent:"center"}}>
+                        <View style={{justifyContent:"center", alignItems:"center"}}>
+                            <Image source={emptyIcon}></Image>
+                            <Text
+                                style={{
+                                    fontFamily:'SF-Pro-Text-Bold',
+                                    color:"#E2E2E2",
+                                    fontSize:14
+                                }}
+                            >No reviews yet</Text>
+                        </View>
+
+                    </View>
+                    }
                     {/* Floating action button */}
                     
                     
@@ -276,8 +350,6 @@ export default function Home(){
             
         </SafeAreaView>
             {/* Bottom sheet, headache to implement */}
-         
-            
                 <View style={{
                     flex:1,
                     position:'absolute',
@@ -307,7 +379,11 @@ export default function Home(){
                                                 source={src} 
                                                 text={item.title} 
                                                 editing={false}
-                                                onTap={beginCreateReview}
+                                                onTap={
+                                                    mode === "review" ?
+                                                    beginCreateReview:
+                                                    addFav
+                                                }
                                             
                                             />
                                         </View> 
@@ -319,14 +395,14 @@ export default function Home(){
                 </View>
                         {/* Floating Action Button */}
                         <TouchableOpacity
-                        // style={{backgroundColor:'transparent'}}
-                        style={styles.fab}
-                        onPress={()=>{                    
-                            setBottomSheetState(
-                                bottomSheetState=>!bottomSheetState
-                            )
-                        }}
-                        >
+                            // style={{backgroundColor:'transparent'}}
+                            style={styles.fab}
+                            onPress={()=>{                    
+                                setBottomSheetState(
+                                    bottomSheetState=>!bottomSheetState
+                                )
+                            }}
+                            >
                             <View >
                                     <Image source={fabIcon} style={styles.fabIcon}/>
                             </View>

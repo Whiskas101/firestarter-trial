@@ -8,7 +8,9 @@ import { useMovieContext } from "@/contexts/MovieContext";
 import BottomSheet from "@/components/BottomSheet";
 import { Movie, movieType } from "@/models/MovieModel";
 import MovieTile from "@/components/MovieTile";
-import { createReview, fetchMovies } from "@/firebaseService";
+import { createReview, fetchAllReview, fetchMovies } from "@/firebaseService";
+import React from "react";
+import { useReviewContext } from "@/contexts/ReviewContext";
 const backIcon = require("../../assets/icons/Go Back_3.png")
 const activeStar = require("../../assets/icons/Star_1.png")
 const inactiveStar = require("../../assets/icons/Star.png")
@@ -27,11 +29,12 @@ export default function CreateReview({MovieIcon, MovieName}:MovieProp){
     const [stars, setStars] = useState(3);
     const [text, setText] = useState("");
 
-    const {movie, setMovieData} = useMovieContext();
-
+    const {movie, setMovieData} = useMovieContext(); // for the movie that is being reviewed
     
-    const [movies, setMovies] = useState<movieType[]|undefined>([]);
+    const [movies, setMovies] = useState<movieType[]|undefined>([]); // set of movies to pick from
     const [bottomSheetState, setBottomSheetState] = useState(false);
+
+    const {review, setReviewData} = useReviewContext();
     
     const imageMap: { [key: string]: any } = {
         "Interstellar": require("../../assets/stickers/Interstellar.png"),
@@ -76,8 +79,20 @@ export default function CreateReview({MovieIcon, MovieName}:MovieProp){
         
         const result = await createReview(newMovie, stars, text);
         if (result !== "fail"){
+            const result = await fetchAllReview();
+            setReviewData(
+                result
+            )
+            
             router.back()
         }
+
+        
+
+
+
+
+
 
     }
 

@@ -48,7 +48,6 @@ export async function fetchMovies(){
         const movies = snapshot.docs.map((doc) => {
             return Movie.fromFirestore(doc);
         })
-        console.log(movies);
         
         return movies;
         
@@ -116,8 +115,7 @@ export async function favouriteMovie(movie: Movie){
                 movies:arrayUnion(movie.toFireStore())
             })
 
-            console.log(result);
-            return;
+            return result;
             
         }else{
             // if this is the first time the user uses the favorites feature:
@@ -129,8 +127,7 @@ export async function favouriteMovie(movie: Movie){
 
             // push the new doc
             const result = await setDoc(favouritesDocRef, favoritesData);
-            console.log(result);
-            return;
+            return result;
             
 
         }
@@ -167,8 +164,6 @@ export async function unFavouriteMovie(movie: Movie){
         }
 
         const moviesData = favoritesDoc.data()?.movies || [];
-        console.log("movies data");
-        // console.log(moviesData)
         
 
         const movies = moviesData.map((item: any) => new Movie(item))
@@ -222,7 +217,6 @@ export async function createReview(movie: Movie, rating: number, content: string
             movie: movie, // this is converted in the to firestore method, to a raw object
             content: content
         })
-        console.log(review.toFireStore());
         
         const result = await addDoc(reviewCollection,  review.toFireStore())
 
@@ -305,13 +299,9 @@ export async function fetchAllReview(){
         }
         
         const reviews = snapshot.docs.map((item)=>{
-            console.log("verify")
-            // console.log(item);
             
             return ReviewModel.fromFirestore(item);
         })
-        console.log("resulting review:")
-        console.log(reviews);
         return reviews;
         
     }catch(err){

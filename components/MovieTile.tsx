@@ -7,6 +7,8 @@ import Animated, {
     Easing,
 } from 'react-native-reanimated';
 import { useEffect } from "react";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import React from "react";
 
 
 type MovieProps = {
@@ -39,7 +41,7 @@ export default function MovieTile({source, text, editing, onRemove, onTap, id}:M
     
 
     return (
-        <TouchableOpacity
+        <TouchableWithoutFeedback
             // Pass a custom function to execute on tap, for varying behaviour in bottom sheets 
             onPress={()=>onTap?.(text, id)}
         >
@@ -61,7 +63,7 @@ export default function MovieTile({source, text, editing, onRemove, onTap, id}:M
                 
                 <Text style={styles.titleText}>{text}</Text>
             </Animated.View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
     );
 }
 

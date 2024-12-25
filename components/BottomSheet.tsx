@@ -26,6 +26,7 @@ import {
 } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import { transform } from "@babel/core";
+import React from "react";
 
 // assets
 const backIcon = require("../assets/icons/Go Back_3.png")

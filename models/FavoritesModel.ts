@@ -20,7 +20,6 @@ export class Favourite implements favouriteType{
     // To convert the firestore object into something usable at the frontend
     static fromFirestore(doc: DocumentSnapshot) : Favourite{
         const data = doc.data()! as favouriteType;
-        console.log("from Firestore called");
         
         
         const result = new Favourite({

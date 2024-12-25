@@ -40,7 +40,6 @@ export class ReviewModel implements reviewType{
     // To convert the firestore object into something usable at the frontend
     static fromFirestore(doc: QueryDocumentSnapshot) : ReviewModel{
         const data = doc.data()!;
-        console.log(`created review${doc.id} ${data.movie}`);
         
         const review = new ReviewModel({
             id: doc.id, // id exists on the doc, not on the data, unlike mongodb
@@ -56,8 +55,6 @@ export class ReviewModel implements reviewType{
         review.id = doc.id;
         
 
-        console.log("Herer!")
-        console.log(review.id);
         return review;
     }
     
