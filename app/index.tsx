@@ -7,6 +7,7 @@ import Playground from "./screens/Playground";
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
 import auth from "@react-native-firebase/auth"
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // const tempIcon = require("../assets/stickers/Interstellar.png")
 
@@ -14,7 +15,10 @@ export default function Index() {
 
  
   return (
-    <Landing/>
+    
+      <Landing/>
+   
+    
     // <Home/>
     // <CreateReview MovieIcon={tempIcon} MovieName="Interstellar"/>
     // <Playground/>

@@ -1,4 +1,6 @@
+import { relativeTime } from "@/utils"
 import {View, Text, StyleSheet, Image, ImageSourcePropType} from "react-native"
+import { create } from "react-test-renderer"
 const starIcon = require("../assets/icons/Star_1.png")
 const deleteIcon = require("../assets/icons/Delete_2.png")
 const heartIcon = require("../assets/icons/Heart_3.png")
@@ -11,16 +13,35 @@ type ReviewProp = {
     movieName: string,
     rating: number,
     likes: number
+    created_at: Date
 }
 
-export default function Review({username, profileImg, content, movieIcon, movieName, rating, likes}:ReviewProp){
+export default function Review(
+    {
+        username, 
+        profileImg, 
+        content, 
+        movieIcon, 
+        movieName, 
+        rating, 
+        likes,
+        created_at,
+    } : ReviewProp
+){
+
+
+    
+    const time = relativeTime(
+        created_at.toJSON().seconds
+    )
+    
     return (<View style={styles.container}>
         {/* Contains the username and time */}
         <View style={styles.topContainer}>
             <Image source={profileImg} style={styles.image}/>
             <Text style={styles.subtleText}>{username}</Text>
             <View style={{flex:1}}></View>
-            <Text style={styles.subtleText}>5m</Text>
+            <Text style={styles.subtleText}>{time}</Text>
         </View>
         {/* Review section */}
         <View style={styles.bottomContainer}>
@@ -48,7 +69,7 @@ export default function Review({username, profileImg, content, movieIcon, movieN
             <View>
             {/* Review content */}
                 <Text style={styles.reviewText}>
-                    screaming. crying. throwing up. words simply cannot describe what this film means to me. can check “seeing interstellar in imax at lincoln square” off my bucket list and that genuinely has me jumping for joy. undeniable motion picture. life changing. \na defining moment in science fiction filmmaking. THE theater experience. few, maybe no, films better suited for imax. i’m levitating. on cloud nine. my joy is immeasurable. 
+                    {content}
                 </Text>
             </View>
 
@@ -75,7 +96,8 @@ export default function Review({username, profileImg, content, movieIcon, movieN
 const styles = StyleSheet.create({
     container:{
         backgroundColor:"#222527",
-        borderRadius:18
+        borderRadius:18,
+        marginVertical: 5
     },
 
     topContainer:{

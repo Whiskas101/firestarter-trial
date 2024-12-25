@@ -1,8 +1,8 @@
 
-import { DocumentSnapshot } from "firebase/firestore";
+import { DocumentSnapshot, QueryDocumentSnapshot } from "firebase/firestore";
 import { Movie } from "./MovieModel";
 
-type reviewType = {
+export type reviewType = {
     id?: string;
     // movie_id: string;
     // title: string;
@@ -38,10 +38,11 @@ export class ReviewModel implements reviewType{
     }
 
     // To convert the firestore object into something usable at the frontend
-    static fromFirestore(doc: DocumentSnapshot) : reviewType{
+    static fromFirestore(doc: QueryDocumentSnapshot) : ReviewModel{
         const data = doc.data()!;
-
-        return new ReviewModel({
+        console.log(`created review${doc.id} ${data.movie}`);
+        
+        const review = new ReviewModel({
             id: doc.id, // id exists on the doc, not on the data, unlike mongodb
             // title: data.title,
             rating: data.rating,
@@ -52,6 +53,12 @@ export class ReviewModel implements reviewType{
             movie: data.movie,
             content: data.content
         })
+        review.id = doc.id;
+        
+
+        console.log("Herer!")
+        console.log(review.id);
+        return review;
     }
     
     // creating an object compatible with writing to the database

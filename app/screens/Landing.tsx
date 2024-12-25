@@ -11,7 +11,6 @@ GoogleSignin.configure({
     scopes:["profile", "email"]
 });
 
-
 const logoImage = require("../../assets/icons/firestarter.png")
 const googleIcon = require("../../assets/icons/Google_7.png")
 const appleIcon = require("../../assets/icons/Apple Logo_2.png")
@@ -24,8 +23,8 @@ export default function Landing(){
     useEffect(()=>{
         const unsubscribe = auth().onAuthStateChanged((user)=>{
             if(user){
-                // router.push('/screens/Home');
                 router.push('/screens/Home');
+                // router.push('/screens/Playground');
             }
         });
         return ()=>unsubscribe()

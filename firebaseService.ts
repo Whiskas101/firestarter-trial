@@ -81,12 +81,14 @@ export async function getFavorites(){
             return [];
         }
         // console.log(snapshot.docs[0].data());
+        // console.log(snapshot.docs[0].data().movies);
         const favorite = Favourite.fromFirestore(snapshot.docs[0])
-        console.log(favorite);
-        return favorite;
+        
+        return favorite.movies;
         
     }catch(err){
         console.log(err);
+        return [];
         
     }
 
@@ -200,7 +202,7 @@ export async function unFavouriteMovie(movie: Movie){
 }
 
 //done
-export async function createReview(movie: Movie, rating: number){
+export async function createReview(movie: Movie, rating: number, content: string){
     // does not restrict user to one review per movie currently.
     
     const user = auth().currentUser;
@@ -218,7 +220,7 @@ export async function createReview(movie: Movie, rating: number){
             created_at: new Date(),
             likes: 0,
             movie: movie, // this is converted in the to firestore method, to a raw object
-            content: "im starting to hate firebase"
+            content: content
         })
         console.log(review.toFireStore());
         
@@ -229,6 +231,7 @@ export async function createReview(movie: Movie, rating: number){
 
     }catch(err){
         console.log(err);
+        return "fail"
         
     }
 }
@@ -287,7 +290,7 @@ export async function fetchAllReview(){
     const user = auth().currentUser;
     if (!user) {
         console.log("not logged in!");
-        return;
+        return [];
     }   
 
     const reviewsCollection = collection(db, "reviews");
@@ -300,19 +303,21 @@ export async function fetchAllReview(){
             return [];
             
         }
+        
         const reviews = snapshot.docs.map((item)=>{
+            console.log("verify")
+            // console.log(item);
+            
             return ReviewModel.fromFirestore(item);
         })
-
+        console.log("resulting review:")
         console.log(reviews);
         return reviews;
         
-        
-
     }catch(err){
         console.log(err);
+        return [];
     }
-
 
 
 }

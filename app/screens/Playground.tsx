@@ -3,6 +3,11 @@ import {createReview, deleteReview, favouriteMovie, fetchAllReview, fetchMovies,
 import { Movie } from "@/models/MovieModel";
 import { ReviewModel } from "@/models/ReviewModel";
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useMemo } from "react";
+
+
+
 const backgroundColor = "#0F1112"
 
 
@@ -17,7 +22,19 @@ export default function Playground(){
         // const result = await unFavouriteMovie(movie);
         // console.log("made a fav req")
 
-        // getFavorites();
+        const result = getFavorites();
+        // const result = favouriteMovie(
+        //     new Movie(
+        //         {
+        //             id:"0MzAWucoYxJKv3PGI4qr",
+        //             rating:5,
+        //             title:"Tenet"
+        //         }
+
+
+        //     )
+        // )
+        console.log(result);
         
         // const result = createReview(
         //     movie,
@@ -30,19 +47,23 @@ export default function Playground(){
         // console.log(result?.[0].created_at);
         
         // const result = await likeReview("Qaap2uTjPSmGQPVKim5h", {multiplier: -1})
-        console.log("frontend");
-        const result = await deleteReview("LWao52VZUEGPJgjKg6RD")
-        console.log(result);
+
+
         
     }
 
-    return <View>
-        <Text>Playground</Text>
-        <TouchableOpacity
-            onPress={handlePress}
-        >
 
-            <Text>Click me</Text>
-        </TouchableOpacity>
-    </View>
+    console.log("bottom sheet")
+
+    return (
+        
+            <View style={{backgroundColor:"blue", flex:1}}>
+                    <TouchableOpacity
+                        onPress={handlePress}
+                    >
+                        <Text>PRESS</Text>
+                    </TouchableOpacity> 
+            </View>
+    );
+
 }

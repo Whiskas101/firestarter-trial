@@ -12,6 +12,9 @@
       "supportsTablet": true
     },
     "android": {
+      "release":{
+        "minify":false
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0F1112"

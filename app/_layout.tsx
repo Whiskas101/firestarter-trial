@@ -2,7 +2,9 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import * as SplashScreen from 'expo-splash-screen';
-
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MovieProvider } from "@/contexts/MovieContext";
+import { ReviewProvider } from "@/contexts/ReviewContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,11 +29,16 @@ export default function RootLayout() {
     }
 
 
-  return <Stack screenOptions={{
-    headerShown:false, // hiding the header
-    headerStyle:{
-      backgroundColor:"#0F1112"
-    },
+  return (
+  
+  <GestureHandlerRootView style={{flex:1}}>
+    <ReviewProvider>
+    <MovieProvider>
+    <Stack screenOptions={{
+      headerShown:false, // hiding the header
+      headerStyle:{
+        backgroundColor:"#0F1112"
+      },
    
   }}>
     <Stack.Screen name="index" options={{title:"base"}}></Stack.Screen>
@@ -42,5 +49,9 @@ export default function RootLayout() {
     
 
 
-  </Stack>;
+    </Stack>
+    </MovieProvider>
+    </ReviewProvider>
+  </GestureHandlerRootView>
+  );
 }
