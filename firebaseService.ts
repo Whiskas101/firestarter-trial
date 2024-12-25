@@ -168,9 +168,9 @@ export async function unFavouriteMovie(movie: Movie){
 
         const movies = moviesData.map((item: any) => new Movie(item))
         
-        const movieExists = movies.some((existingMovie : Movie) => existingMovie.id === movie.id);
-
-        if( !movieExists){
+        const movieExists = movies.some((existingMovie : Movie) => existingMovie.title === movie.title);
+        console.log(moviesData);
+        if( !movieExists ){
             // the movie being removed was never added to favourites.
             console.log("Movie wasn't in favourites list!");
             return; 

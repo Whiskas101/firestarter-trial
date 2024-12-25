@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native";
 
 // For pulling user data
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { favouriteMovie, fetchAllReview, fetchMovies, getFavorites } from "@/firebaseService";
+import { deleteReview, favouriteMovie, fetchAllReview, fetchMovies, getFavorites, unFavouriteMovie } from "@/firebaseService";
 import { favouriteType } from "@/models/FavoritesModel";
 
 
@@ -133,20 +133,36 @@ export default function Home(){
     }, [bottomSheetState])
 
     // Favorites deletion logic
-    function removeFavorite(title: string){
+    async function removeFavorite(title: string, id:string){
         console.log("delete fav req");
+        console.log(favourites);
+        
         setFavourites(favourites=>favourites?.filter(item=>item.title !== title))
-        return // temp
+      
         // ADD API CALL TO DELETE FAV HERE
+        console.log(id);
+        
+        await unFavouriteMovie(
+            new Movie({
+                id: id,
+                title: title,
+                rating:0 // doesnt matter
+            })
+        )
     }
 
     // Deletion of review
-    function removeReview(id: string){
+    async function removeReview(id: string){
         console.log("delete review req");
         // console.log(review);
-        
         // review?.map((item)=>console.log(item.id !== id))
+        // change ui
         setReviewData((review?.filter(item=>item.id !== id)) || [])
+
+        //reflect the same change in backend
+        await deleteReview(id);
+
+
         return; // temp
     }
 
@@ -269,11 +285,13 @@ export default function Home(){
                     renderItem={({item})=>{
                         const src = imageMap[item.title];
                         return <MovieTile 
+                            
                             source={src}
                             text={item.title} 
                             onRemove={removeFavorite}
 
                             editing={editing}
+                            id={item.id}
                         />
                     }}
                     ListFooterComponent={

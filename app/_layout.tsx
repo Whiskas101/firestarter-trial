@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MovieProvider } from "@/contexts/MovieContext";
 import { ReviewProvider } from "@/contexts/ReviewContext";
+import React from "react";
 
 SplashScreen.preventAutoHideAsync();
 

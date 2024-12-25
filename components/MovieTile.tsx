@@ -52,7 +52,7 @@ export default function MovieTile({source, text, editing, onRemove, onTap, id}:M
                 {editing 
                 ? <TouchableOpacity 
                     style={styles.btnContainer} 
-                    onPress={()=>onRemove?.(text)}>
+                    onPress={()=>onRemove?.(text, id)}>
                     <RemoveButton/>
                     </TouchableOpacity> : 
                     <View/>}
