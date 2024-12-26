@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // backgroundColor: "#",
+
     },
 
     backdrop:{
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         zIndex: 100,
+        
     },
 
     bottomSheetTopSection:{
@@ -162,6 +164,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'flex-start',
         // alignSelf:'center',
+        
+        
 
         paddingVertical:20,
         // marginVertical:10,
@@ -188,8 +192,9 @@ const styles = StyleSheet.create({
 
         left:0,
         right:0,
-        top:"50%", // accounting for the padding given to the top section parent object
+        // top:"50%", // accounting for the padding given to the top section parent object
         textAlign:'center',
+        margin:'auto',
         // backgroundColor:'green',
         zIndex: -1 // To make back the back button clickable.
     
@@ -208,5 +213,6 @@ const styles = StyleSheet.create({
         padding: 16,
         height:100,
         fontSize: 16,
+        
     },
 });

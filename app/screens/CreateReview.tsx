@@ -250,7 +250,7 @@ export default function CreateReview({MovieIcon, MovieName}:MovieProp){
                                     data = {movies}
                                     numColumns={3}
                                     style={styles.gridStyle}
-                                    
+                                    contentContainerStyle={{alignItems:'center'}} 
                                     renderItem={({item})=>{
                                         const src = imageMap[item.title];
                                         return <View
@@ -350,6 +350,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         backgroundColor:"#1C1F21",
         alignItems:"center",
+        justifyContent:'center',
         paddingHorizontal:13,
         paddingVertical:9,
         borderRadius:12,
@@ -363,6 +364,7 @@ const styles = StyleSheet.create({
     tinyIcon:{
         height:17,
         width:17,
+        
     },
     
     ratingBox:{

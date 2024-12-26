@@ -75,7 +75,6 @@ export default function Home(){
     }
 
 
-    const data = Array.from({length: 5}, (_, index, )=>"item")
     // Helper function
     function firstName(name: string | null | undefined){
         if (name){
@@ -382,11 +381,12 @@ export default function Home(){
                         
                         <BottomSheet isOpen={bottomSheetState} setIsOpen={setBottomSheetState}>
                             {/* Grid of movies to be used for selection */}
-                            <View >
+                            <View>
                                 <FlatList
                                     data = {movies}
                                     numColumns={3}
                                     style={styles.gridStyle}
+                                    contentContainerStyle={{alignItems:'center'}}
                                     
                                     renderItem={({item})=>{
                                         const src = imageMap[item.title];
@@ -497,6 +497,8 @@ const styles = StyleSheet.create({
         height:"100%",
         paddingTop:27,
         borderRadius: 20,
+        width:"100%",
+        
         // marginHorizontal:10
     },
 });
