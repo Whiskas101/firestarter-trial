@@ -11,6 +11,8 @@ import MovieTile from "@/components/MovieTile";
 import { createReview, fetchAllReview, fetchMovies } from "@/firebaseService";
 import React from "react";
 import { useReviewContext } from "@/contexts/ReviewContext";
+import auth from "@react-native-firebase/auth";
+
 const backIcon = require("../../assets/icons/Go Back_3.png")
 const activeStar = require("../../assets/icons/Star_1.png")
 const inactiveStar = require("../../assets/icons/Star.png")
@@ -35,7 +37,8 @@ export default function CreateReview({MovieIcon, MovieName}:MovieProp){
     const [bottomSheetState, setBottomSheetState] = useState(false);
 
     const {review, setReviewData} = useReviewContext();
-    
+    const user = auth().currentUser;
+
     const imageMap: { [key: string]: any } = {
         "Interstellar": require("../../assets/stickers/Interstellar.png"),
         "Tenet": require("../../assets/stickers/Tenet.png"),
@@ -195,7 +198,7 @@ export default function CreateReview({MovieIcon, MovieName}:MovieProp){
             {/* User profile and no. of characters remaining */}
             <View style={styles.reviewFieldTop}>
                 {/* User Profile Icon */}
-                <Image source={tempIcon} style={styles.profileIcon}/>
+                {user?.photoURL && <Image source={{uri:user.photoURL}} style={styles.profileIcon}/>}
                 {/* Remaining characters  */}
                 <Text style={{
                     fontFamily:'SF-Pro-Text-Bold',
@@ -417,7 +420,8 @@ const styles = StyleSheet.create({
     profileIcon:{
         height:17,
         width:17,
-        margin:12
+        margin:12,
+        borderRadius:50
     },
 
     postbtn:{

@@ -12,15 +12,15 @@
       "supportsTablet": true
     },
     "android": {
-      "release":{
-        "minify":false
+      "release": {
+        "minify": false
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0F1112"
       },
       "package": "com.whiskas101.trialapp",
-      "googleServicesFile":"./google-services.json"
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -30,7 +30,6 @@
     "plugins": [
       "@react-native-firebase/app",
       "@react-native-google-signin/google-signin",
-      
       "expo-router",
       [
         "expo-splash-screen",
@@ -59,6 +58,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "54045441-6313-495d-bb0f-18e85de18d4b"
+      }
     }
   }
 }
